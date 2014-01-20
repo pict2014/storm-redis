@@ -18,19 +18,20 @@ public class TestMap implements Serializable {
 	public static void main(String[] args) {
 		Map<String, CountValue> counters =null;
 		PersistentMap mapStore = new PersistentMap("localhost");
-		try
-	      {
-			 BigInteger a=new BigInteger("4");
-			 byte key[]=a.toByteArray();
+		try {
+			BigInteger a=new BigInteger("4");
+			byte key[]=a.toByteArray();
 			
-			 counters = (HashMap<String, CountValue>) mapStore.getState(key);
-	         System.out.println("Object De-Serialized "+ counters.size());
-	        
-	      }catch(Exception i)
-	      {
-	         i.printStackTrace();
+			counters = (HashMap<String, CountValue>) mapStore.getState(key);
+			System.out.println("Object De-Serialized "+ counters.size());
+
+	      	}
+	      	catch(Exception i)
+	      	{
+	         	i.printStackTrace();
 	         
-	      }
+	      	}	
+		
 		for(Map.Entry<String, CountValue> entry : counters.entrySet()){
 			System.out.println("String : "+entry.getKey()+" Count: "+entry.getValue().count);
 		}
