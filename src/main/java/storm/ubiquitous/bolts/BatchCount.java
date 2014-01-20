@@ -79,21 +79,20 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	    	   	newVal.txid = _id.getTransactionId();
 	    	   	newVal.atid = _id.getAttemptId();
 	          
-	          if (val != null) {
-	        	  
-	        	  newVal.prev_count = val.count;
-	        	  newVal.count = val.count;
-	          	}
-	          
-	           newVal.count = newVal.count + counters.get(key);
-	           INMEMORYDB.put(key, newVal);
+			if (val != null) {
+				newVal.prev_count = val.count;
+				newVal.count = val.count;
+			}
+
+			newVal.count = newVal.count + counters.get(key);
+			INMEMORYDB.put(key, newVal);
 	       	}
 	        
 	       	else {
 	         
-	    	   newVal = val;
-	    	   System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + 
-	    	   " is replayed.");
+			newVal = val;
+			System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + 
+			" is replayed.");
 	       	}
 	        	System.out.println("String: "+key+" NewCount: "+newVal.count+" PrevCount: "
 	        	+newVal.prev_count+" Txid: "+_id.getTransactionId()+" AttemptID: "+ _id.getAttemptId());
