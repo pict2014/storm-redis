@@ -13,7 +13,7 @@ import redis.clients.jedis.Jedis;
  * reassigned to another machine it still has its state).So generally you keep any persistent state in a 
  * database, oftentimes doing something like waiting to ack() tuples until you've done a batch update to 
  * the database. Stateful bolts will just be a much more efficient way of keeping a large amount of 
- * state at hand in a bolt
+ * state at hand in a bolt.
  * @author aniket
  */
 public class PersistentMap {
@@ -33,25 +33,25 @@ public class PersistentMap {
 		
 		try {
 			 
-			 db.connect();
-	         byteOut = new ByteArrayOutputStream();
-			 out = new ObjectOutputStream(byteOut);
-	         out.writeObject(value);
-	        
-	         byte [] byteValue = byteOut.toByteArray();
-	         db.set(key,byteValue);		         
-	         System.out.println("Bolt state persisted.");
-	         out.close();
-		     byteOut.close();
-	        
+			db.connect();
+			byteOut = new ByteArrayOutputStream();
+			out = new ObjectOutputStream(byteOut);
+			out.writeObject(value);
+			
+			byte [] byteValue = byteOut.toByteArray();
+			db.set(key,byteValue);		         
+			System.out.println("Bolt state persisted.");
+			out.close();
+			byteOut.close();
+
 	      	}
 			
 		catch(Exception i) {			
-			 i.printStackTrace();	          
+			i.printStackTrace();	          
 	      	}
 		finally{
-			 db.disconnect();
-			}
+			db.disconnect();
+		}
 			
 	}
 	public Object getState(byte[] key) throws IOException {
@@ -64,19 +64,19 @@ public class PersistentMap {
 			 byte[] store = db.get(key);
 			 byteIn = new ByteArrayInputStream(store);
 			 in = new ObjectInputStream(byteIn);
-	         value = in.readObject();
-	         System.out.println("Bolt state retrieved.");
-	         in.close();
-	         byteIn.close();
-	        
+		         value = in.readObject();
+		         System.out.println("Bolt state retrieved.");
+		         in.close();
+		         byteIn.close();
+		        
 	      	}
 			
 		catch(Exception i) {
-	         i.printStackTrace();
+	         	 i.printStackTrace();
 	      	}
 		finally{
 			 db.disconnect();
-			}
+		}
 		
 		return value;
 		
