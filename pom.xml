@@ -8,38 +8,38 @@
    <build>
    <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <compilerVersion>1.6</compilerVersion>
-        </configuration>
-      </plugin>
-	 </plugins>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>2.3.2</version>
+		<configuration>
+			<source>1.6</source>
+			<target>1.6</target>
+		<compilerVersion>1.6</compilerVersion>
+		</configuration>
+      	</plugin>
+   </plugins>
   </build>
   <repositories>
         <!-- Repository where we can found the storm dependencies  -->
         <repository>
-            <id>clojars.org</id>
-            <url>http://clojars.org/repo</url>
+		<id>clojars.org</id>
+		<url>http://clojars.org/repo</url>
         </repository>
   </repositories>
   <dependencies>
         <!-- Storm Dependency -->
         <dependency> 
-		  <groupId>storm</groupId>
-		  <artifactId>storm</artifactId>
-		  <version>0.9.0.1</version>
+		<groupId>storm</groupId>
+		<artifactId>storm</artifactId>
+		<version>0.9.0.1</version>
         </dependency>
         <!-- Jedis Dependency -->
         <dependency>
-  		<groupId>redis.clients</groupId>
-    		<artifactId>jedis</artifactId>
-    		<version>2.2.1</version>
-    		<type>jar</type>
-    		<scope>compile</scope>
+		<groupId>redis.clients</groupId>
+		<artifactId>jedis</artifactId>
+		<version>2.2.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
 	</dependency>
   </dependencies>
 </project>
