@@ -98,7 +98,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	        	+newVal.prev_count+" Txid: "+_id.getTransactionId()+" AttemptID: "+ _id.getAttemptId());
 	       
 	       	_collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
-	      }
+		}
 	       	//Store State
 	   	if(counters.size()>0)
 	      	{
