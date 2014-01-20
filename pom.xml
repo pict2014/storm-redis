@@ -7,7 +7,7 @@
   <description>State Management in Bolts.</description>
    <build>
    <plugins>
-      <plugin>
+	<plugin>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-compiler-plugin</artifactId>
 		<version>2.3.2</version>
@@ -16,7 +16,7 @@
 			<target>1.6</target>
 		<compilerVersion>1.6</compilerVersion>
 		</configuration>
-      	</plugin>
+	</plugin>
    </plugins>
   </build>
   <repositories>
