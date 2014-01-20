@@ -44,7 +44,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	PersistentMap mapStore;
 
 	public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context, 
-						BatchOutputCollector collector, TransactionAttempt id) {
+			    BatchOutputCollector collector, TransactionAttempt id) {
 		_id = id;
    	 	this.counters = new HashMap<String, Integer>();
    	 	_collector=collector;
@@ -65,12 +65,12 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
    }    
    
 	public void finishBatch() throws FailedException{
-	   for (String key : counters.keySet()) {
+	   	for (String key : counters.keySet()) {
 	        
-		   CountValue val = INMEMORYDB.get(key);
-	       CountValue newVal;
-	       
-	       if (val == null || !val.txid.equals(_id.getTransactionId())) {
+		CountValue val = INMEMORYDB.get(key);
+		CountValue newVal;
+
+	       	if (val == null || !val.txid.equals(_id.getTransactionId())) {
 	          
 	    	   	newVal = new CountValue();
 	    	   	newVal.txid = _id.getTransactionId();
@@ -84,32 +84,33 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	          
 	           newVal.count = newVal.count + counters.get(key);
 	           INMEMORYDB.put(key, newVal);
-	       }
+	       	}
 	        
-	       else {
+	       	else {
 	         
 	    	   newVal = val;
-	    	   System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is replayed.");
-	       }
-	        	System.out.println("String: "+key+" NewCount: "+newVal.count+" PrevCount: "+newVal.prev_count+
-	        					" Txid: "+_id.getTransactionId()+" AttemptID: "+ _id.getAttemptId());
+	    	   System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + 
+	    	   " is replayed.");
+	       	}
+	        	System.out.println("String: "+key+" NewCount: "+newVal.count+" PrevCount: "
+	        	+newVal.prev_count+" Txid: "+_id.getTransactionId()+" AttemptID: "+ _id.getAttemptId());
 	       
-	       _collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
+	       	_collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
 	      }
 	       //Store State
-	      if(counters.size()>0)
-	      {
-	    	  try {
+	      	if(counters.size()>0)
+	      	{
+	    	  	try {
 	    		  	mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);	    		  
 	    	  	}
-	    	  catch (IOException e) {
+	    	  	catch (IOException e) {
 	    		  	e.printStackTrace();
 	    	  	}
-	      }
+	      	}
    }    
    
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-     declarer.declare(new Fields("id","name", "count"));
+     		declarer.declare(new Fields("id","name", "count"));
    }
 }
  
