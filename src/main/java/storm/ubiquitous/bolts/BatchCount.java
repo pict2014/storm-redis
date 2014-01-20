@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import storm.ubiquitous.state.PersistentMap;
 import backtype.storm.coordination.BatchOutputCollector;
@@ -34,7 +35,8 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 		    public long atid = 0L;
 	}
 	
-	public static Map<String, CountValue> INMEMORYDB = new HashMap<String, CountValue>();
+	public static Map<String, CountValue> INMEMORYDB = new ConcurrentHashMap<String, CountValue>();;
+	
 	
 	TransactionAttempt _id;
 	BatchOutputCollector _collector;
@@ -65,6 +67,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
    }    
    
 	public void finishBatch() throws FailedException{
+		
 	   	for (String key : counters.keySet()) {
 	        
 		CountValue val = INMEMORYDB.get(key);
@@ -97,7 +100,8 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	       
 	       	_collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
 	      }
-	       //Store State
+	       	//Store State
+	   		
 	      	if(counters.size()>0)
 	      	{
 	    	  	try {
@@ -107,6 +111,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	    		  	e.printStackTrace();
 	    	  	}
 	      	}
+	   	
    }    
    
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {

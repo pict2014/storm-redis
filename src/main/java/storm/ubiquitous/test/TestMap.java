@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import storm.ubiquitous.bolts.BatchCount.CountValue;
 import storm.ubiquitous.state.PersistentMap;
@@ -19,17 +20,17 @@ public class TestMap implements Serializable {
 		Map<String, CountValue> counters =null;
 		PersistentMap mapStore = new PersistentMap("localhost");
 		try {
-			BigInteger a=new BigInteger("4");
+			//Obtain the state of Bolt for Txid: 3
+			BigInteger a=new BigInteger("3");
 			byte key[]=a.toByteArray();
 			
-			counters = (HashMap<String, CountValue>) mapStore.getState(key);
+			counters = (ConcurrentHashMap<String, CountValue>) mapStore.getState(key);
 			System.out.println("Object De-Serialized "+ counters.size());
 
 	      	}
 	      	catch(Exception i)
 	      	{
-	         	i.printStackTrace();
-	         
+	         	i.printStackTrace();	         
 	      	}	
 		
 		for(Map.Entry<String, CountValue> entry : counters.entrySet()){

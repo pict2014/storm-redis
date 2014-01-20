@@ -39,7 +39,8 @@ public class PersistentMap {
 			out.writeObject(value);
 			
 			byte [] byteValue = byteOut.toByteArray();
-			db.set(key,byteValue);		         
+			db.set(key,byteValue);		        
+			db.save();
 			System.out.println("Bolt state persisted.");
 			out.close();
 			byteOut.close();
@@ -51,6 +52,7 @@ public class PersistentMap {
 	      	}
 		finally{
 			db.disconnect();
+			//db.shutdown();
 		}
 			
 	}
@@ -64,18 +66,19 @@ public class PersistentMap {
 			 byte[] store = db.get(key);
 			 byteIn = new ByteArrayInputStream(store);
 			 in = new ObjectInputStream(byteIn);
-		         value = in.readObject();
-		         System.out.println("Bolt state retrieved.");
-		         in.close();
-		         byteIn.close();
+			 value = in.readObject();
+			 System.out.println("Bolt state retrieved.");
+			 in.close();
+			 byteIn.close();
 		        
 	      	}
 			
 		catch(Exception i) {
-	         	 i.printStackTrace();
+			 i.printStackTrace();
 	      	}
 		finally{
 			 db.disconnect();
+			 //db.shutdown();
 		}
 		
 		return value;
