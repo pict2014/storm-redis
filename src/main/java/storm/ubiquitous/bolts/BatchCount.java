@@ -48,9 +48,9 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context, 
 			    BatchOutputCollector collector, TransactionAttempt id) {
 		_id = id;
-   	 	this.counters = new HashMap<String, Integer>();
-   	 	_collector=collector;
-   	 	mapStore=new PersistentMap("localhost");
+		this.counters = new HashMap<String, Integer>();
+		_collector=collector;
+		mapStore=new PersistentMap("localhost");
 	}
    
 	public void execute(Tuple tuple) {
@@ -101,8 +101,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	       	_collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
 	      }
 	       	//Store State
-	   		
-	      	if(counters.size()>0)
+	   	if(counters.size()>0)
 	      	{
 	    	  	try {
 	    		  	mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);	    		  
