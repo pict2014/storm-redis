@@ -52,7 +52,7 @@ public class PersistentMap {
 	      	}
 		finally{
 			db.disconnect();
-			//db.shutdown();
+			
 		}
 			
 	}
@@ -78,7 +78,7 @@ public class PersistentMap {
 	      	}
 		finally{
 			 db.disconnect();
-			 //db.shutdown();
+			 
 		}
 		
 		return value;
