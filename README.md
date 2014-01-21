@@ -14,7 +14,7 @@ State of Bolts get persisted periodically in Redis. Redis is an in-memory databa
 Jedis is a Java client used for Redis, which can be used as a Maven dependency
 ```xml
  <!-- Jedis Dependency -->
-        <dependency>
+	<dependency>
 		<groupId>redis.clients</groupId>
 		<artifactId>jedis</artifactId>
 		<version>2.2.1</version>
