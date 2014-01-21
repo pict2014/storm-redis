@@ -4,7 +4,7 @@ This is an idea to build abstractions for bolts with fault-tolerant state, so if
 ```java
 public interface IPersistentMap(String serverURL) {
       public Object getState(byte[] key);
-      public void putState(byte[] key, Object value);
+      public void setState(byte[] key, Object value);
 } 
 ```
 The first implementation will target amounts of state that can fit into memory, so re-initialization time won't be a concern. But once we look at storing much larger amount of state we will need to consider this point.
