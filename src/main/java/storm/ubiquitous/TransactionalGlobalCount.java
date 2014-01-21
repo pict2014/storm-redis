@@ -80,7 +80,7 @@ public class TransactionalGlobalCount {
       }
     else
     	cluster.submitTopology("global-count-topology", config, builder.buildTopology());
-     	//Thread.sleep(1000);
-     	//cluster.shutdown();
+     	Thread.sleep(10000);
+     	cluster.shutdown();
     }
 }

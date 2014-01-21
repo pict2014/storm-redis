@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import storm.ubiquitous.bolts.BatchCount.CountValue;
-import storm.ubiquitous.state.PersistentMap;
+import storm.ubiquitous.state.RedisMap;
 
 @SuppressWarnings({ "unchecked" })
 public class TestMap implements Serializable {
@@ -18,7 +18,7 @@ public class TestMap implements Serializable {
 
 	public static void main(String[] args) {
 		Map<String, CountValue> counters =null;
-		PersistentMap mapStore = new PersistentMap("localhost");
+		RedisMap mapStore = new RedisMap("localhost");
 		try {
 			//Obtain the state of Bolt for Txid: 3
 			BigInteger a=new BigInteger("3");

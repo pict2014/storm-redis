@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import storm.ubiquitous.state.PersistentMap;
+import storm.ubiquitous.state.RedisMap;
 import backtype.storm.coordination.BatchOutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.FailedException;
@@ -43,14 +43,14 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	String name;
 	Map<String, Integer> counters;
 	Integer _count = 1;
-	PersistentMap mapStore;
+	RedisMap mapStore;
 
 	public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context, 
 			    BatchOutputCollector collector, TransactionAttempt id) {
 		_id = id;
 		this.counters = new HashMap<String, Integer>();
 		_collector=collector;
-		mapStore=new PersistentMap("localhost");
+		mapStore=new RedisMap("localhost");
 	}
    
 	public void execute(Tuple tuple) {
@@ -102,12 +102,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	       	//Store State
 	   	if(counters.size()>0)
 	      	{
-	    	  	try {
-	    		  	mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);	    		  
-	    	  	}
-	    	  	catch (IOException e) {
-	    		  	e.printStackTrace();
-	    	  	}
+	    	  	mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);
 	      	}
 	   	
    }    

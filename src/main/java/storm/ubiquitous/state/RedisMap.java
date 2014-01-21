@@ -16,7 +16,7 @@ import redis.clients.jedis.Jedis;
  * state at hand in a bolt.
  * @author aniket
  */
-public class PersistentMap {
+public class RedisMap implements IPersistentMap{
 	
 	String serverURL;
 	ByteArrayOutputStream byteOut;
@@ -24,16 +24,16 @@ public class PersistentMap {
 	ByteArrayInputStream byteIn;
 	ObjectInputStream in;
 	
-	public PersistentMap(String serverURL) {
+	public RedisMap(String serverURL) {
 		this.serverURL=serverURL;		
 	}
 
-	public void setState(byte[] key, Object value) throws IOException {
-		Jedis db = new Jedis(serverURL);
+	public void setState(byte[] key, Object value) {
+		Jedis db = null;
 		
 		try {
-			 
-			db.connect();
+			
+			db = new Jedis(serverURL); 
 			byteOut = new ByteArrayOutputStream();
 			out = new ObjectOutputStream(byteOut);
 			out.writeObject(value);
@@ -48,21 +48,18 @@ public class PersistentMap {
 	      	}
 			
 		catch(Exception i) {			
-			i.printStackTrace();	          
+			i.printStackTrace();
+			
 	      	}
-		finally{
-			db.disconnect();
-			
-		}
-			
+					
 	}
-	public Object getState(byte[] key) throws IOException {
+	public Object getState(byte[] key) {
 		Object value = null;
-		Jedis db = new Jedis(serverURL);
+		Jedis db = null;
 		
 		try {
 			 
-			 db.connect();
+			 db = new Jedis(serverURL);
 			 byte[] store = db.get(key);
 			 byteIn = new ByteArrayInputStream(store);
 			 in = new ObjectInputStream(byteIn);
@@ -70,18 +67,21 @@ public class PersistentMap {
 			 System.out.println("Bolt state retrieved.");
 			 in.close();
 			 byteIn.close();
-		        
+		       
 	      	}
 			
 		catch(Exception i) {
 			 i.printStackTrace();
-	      	}
-		finally{
-			 db.disconnect();
 			 
-		}
-		
+	      	}
+				
 		return value;
+		
+	}
+
+	@Override
+	public void close() throws IOException {
+		System.out.println("Closing all open connections.");
 		
 	}
 }
