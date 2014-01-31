@@ -22,6 +22,10 @@ Jedis is a Java client used for Redis, which can be used as a Maven dependency
 		<scope>compile</scope>
 	</dependency>
 ```
-
+TODO
+=====================
+Kryo Serialization
+Runtime failure
+Restore State on failure
 
 
