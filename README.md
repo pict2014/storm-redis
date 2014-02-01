@@ -24,8 +24,7 @@ Jedis is a Java client used for Redis, which can be used as a Maven dependency
 ```
 TODO
 =====================
-Kryo Serialization
-Runtime failure
+Runtime failure,
 Restore State on failure
 
 

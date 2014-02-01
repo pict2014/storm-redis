@@ -35,7 +35,7 @@ public class RedisMap implements IPersistentMap{
 
 	public void setState(byte[] key, Object value) {
 		Jedis db = null;
-		
+		Kryo kryo = null;
 		try {
 			
 			db = new Jedis(serverURL); 
@@ -47,14 +47,14 @@ public class RedisMap implements IPersistentMap{
 			//out.close();
 			//byteOut.close();
 						
-			Kryo kryo = new Kryo();
-		    Output output = new Output(new ByteArrayOutputStream());
-		    kryo.writeObject(output, value);
-
-		    byte [] byteValue=output.toBytes();
-		    db.set(key,byteValue);
-		    db.save(); 
-		    output.close();		    
+			kryo = new Kryo();
+			Output output = new Output(new ByteArrayOutputStream());
+			kryo.writeObject(output, value);
+			
+			byte [] byteValue=output.toBytes();
+			db.set(key,byteValue);
+			db.save(); 
+			output.close();		    
 
 	      	}
 			
