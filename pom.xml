@@ -20,7 +20,7 @@
     </plugins>
   </build>
   <repositories>
-    <!-- Repository where we can found the storm dependencies  -->
+    <!-- Repository where we can find the storm dependencies  -->
     <repository>
       <id>clojars.org</id>
       <url>http://clojars.org/repo</url>
