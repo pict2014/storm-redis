@@ -5,6 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 
 import redis.clients.jedis.Jedis;
 
@@ -34,16 +39,22 @@ public class RedisMap implements IPersistentMap{
 		try {
 			
 			db = new Jedis(serverURL); 
-			byteOut = new ByteArrayOutputStream();
-			out = new ObjectOutputStream(byteOut);
-			out.writeObject(value);
 			
-			byte [] byteValue = byteOut.toByteArray();
-			db.set(key,byteValue);		        
-			db.save();
-			System.out.println("Bolt state persisted.");
-			out.close();
-			byteOut.close();
+			//Java Serialization
+			//byteOut = new ByteArrayOutputStream();
+			//out = new ObjectOutputStream(byteOut);
+			//out.writeObject(value);
+			//out.close();
+			//byteOut.close();
+						
+			Kryo kryo = new Kryo();
+		    Output output = new Output(new ByteArrayOutputStream());
+		    kryo.writeObject(output, value);
+
+		    byte [] byteValue=output.toBytes();
+		    db.set(key,byteValue);
+		    db.save(); 
+		    output.close();		    
 
 	      	}
 			
@@ -56,17 +67,24 @@ public class RedisMap implements IPersistentMap{
 	public Object getState(byte[] key) {
 		Object value = null;
 		Jedis db = null;
-		
+		Kryo kryo = null;
 		try {
 			 
 			 db = new Jedis(serverURL);
+			 kryo = new Kryo(); 
 			 byte[] store = db.get(key);
-			 byteIn = new ByteArrayInputStream(store);
-			 in = new ObjectInputStream(byteIn);
-			 value = in.readObject();
+			 
+			 //Java De-Serialization
+			 //byteIn = new ByteArrayInputStream(store);
+			 //in = new ObjectInputStream(byteIn);
+			 //value = in.readObject();
+			 //in.close();
+			 //byteIn.close();
+				
+			 Input input = new Input(new ByteArrayInputStream(store));
+			 value = kryo.readObject(input, ConcurrentHashMap.class);
 			 System.out.println("Bolt state retrieved.");
-			 in.close();
-			 byteIn.close();
+			 input.close();
 		       
 	      	}
 			
