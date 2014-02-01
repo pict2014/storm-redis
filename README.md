@@ -124,7 +124,7 @@ The topology follows the following schematic:
 The data in the kafka topic is put using a java project see [kafka-starter]() which takes data from **_mongodb_**
 and puts them on a kafka queue(topic).
 
-Data that is extracted from mongodb is in the form json.
+Data that is extracted from mongodb is in json format.
 
 Data inside mongodb is put using a _python_ code which uses the **_twitter api_** for eg see [this](https://github.com/abhi11/twitter-trend/blob/master/trend_insert.py)
 
@@ -135,7 +135,9 @@ the topology sees a lot of data. Thus, it basically resembles a firehose.
 
 TODO
 =====================
-Runtime failure,
-Restore State on failure
+*   Writing the kafka producer so partitions have equal no. of messages.
+*   Runtime failure
+*   Restore State on failure
+
 
 
