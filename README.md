@@ -29,13 +29,17 @@ public interface IPersistentMap(String serverURL) {
 } 
 ```
 The first implementation will target amounts of state that can fit into memory, so re-initialization time won't be a concern. But once we look at storing much larger amount of state we will need to consider this point.
-State of Bolts get persisted periodically in Redis. Redis is an in-memory database that persists on disk. The data model is key-value, but many different kind of values are supported: Strings, Lists, Sets, Sorted Sets, Hashes <http://redis.io>
+State of Bolts get persisted periodically in Redis. Redis is an in-memory database that persists on disk. The data model is key-value, 
+but many different kind of values are supported: Strings, Lists, Sets, Sorted Sets, Hashes <http://redis.io>
+
+
 
 ##Dependencies##
 The project uses many dependencies for **kafka** and **redis**.
 All dependenices are provided as maven dependecies.
 
-Kafka uses the following dependencies
+Kafka uses the following dependencies. To run the topology inside storm jars of the dependencies 
+can be downloaded from maven repository and should be placed inside the `lib` directory of storm
 
 ```xml
 	<dependencies>
@@ -55,7 +59,7 @@ Kafka uses the following dependencies
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.9.2</artifactId>
       			<version>0.8.0</version>
-    			</dependency>
+    		</dependency>
 
     		<dependency>
 			<groupId>javax.inject</groupId>
@@ -85,10 +89,9 @@ Kafka uses the following dependencies
 			<groupId>com.yammer.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 			<version>2.2.0</version>
-			</dependency>     
+		</dependency>     
 
         </dependencies>
-
 ```
 
 Jedis is a Java client used for Redis, which can be used as a Maven dependency
@@ -102,6 +105,33 @@ Jedis is a Java client used for Redis, which can be used as a Maven dependency
 		<scope>compile</scope>
 	</dependency>
 ```
+
+##The topology to show the working##
+
+###Explaination###
+
+The topology follows the following schematic:
+```
+           ____asking to replay batch__ _____failed signal to spout__
+          |                            |                             |
+          V                            V                             V 
+.-----------------.       .-----------------.        .-----------------.     .-----------------.
+|       kafka     |------>|       spout     |------->|      bolt       |---->|      redis      |
+'-----------------'       '-----------------'        '-----------------'     '-----------------'
+  for replaying          |--------------the topology-----------------|          stores state
+```
+
+The data in the kafka topic is put using a java project see [kafka-starter]() which takes data from **_mongodb_**
+and puts them on a kafka queue(topic).
+
+Data that is extracted from mongodb is in the form json.
+
+Data inside mongodb is put using a _python_ code which uses the **_twitter api_** for eg see [this](https://github.com/abhi11/twitter-trend/blob/master/trend_insert.py)
+
+Thus, the combination of mongo-kafka helps in *simulating* real-time streaming data.
+Basically, mongodb is used so that a lot of data can be stored and then put on kafka so that 
+the topology sees a lot of data. Thus, it basically resembles a firehose. 
+
 
 TODO
 =====================
