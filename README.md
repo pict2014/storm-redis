@@ -1,6 +1,15 @@
-StatefulBolts
+storm-redis
 =====================
-This is an idea to build abstractions for bolts with fault-tolerant state, so if a task dies and gets reassigned to another machine it still has its state. The tuple trees that are made incomplete due to the bolt task failure will time-out and the spout will be able to replay the source tuple for that tree. Tuples that have already successfully completed will not be replayed. So generally you keep any persistent state in a database, oftentimes doing something like waiting to ack() tuples until you've done a batch update to the database. Stateful bolts will just be a much more efficient way of keeping a large amount of state at hand in a bolt.
+
+This project implements an approach towards implementing stateful-ness of *bolts* in [Storm](https://github.com/nathanmarz/storm "storm").
+
+##The project uses the following open-source projects:##
+*   [Kafka](https://kafka.apache.org/ "Kafka").
+*   [Redis](http://redis.io/ "redis"). 
+
+###Explaination###
+
+This project builds abstractions for bolts with fault-tolerant state, so if a task dies and gets reassigned to another machine it still has its state. The tuple trees that are made incomplete due to the bolt task failure will time-out and the spout will be able to replay the source tuple for that tree. Tuples that have already successfully completed will not be replayed. So generally you keep any persistent state in a database, oftentimes doing something like waiting to ack() tuples until you've done a batch update to the database. Stateful bolts will just be a much more efficient way of keeping a large amount of state at hand in a bolt.
 ```java
 public interface IPersistentMap(String serverURL) {
       public Object getState(byte[] key);
