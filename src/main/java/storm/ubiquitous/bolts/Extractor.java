@@ -20,8 +20,8 @@ import backtype.storm.tuple.Values;
 public class Extractor extends BaseBatchBolt 
 {
 
-	private static final long serialVersionUID = 7510735576780935459L;
-	Object _id;
+    private static final long serialVersionUID = 7510735576780935459L;
+    Object _id;
     BatchOutputCollector _collector;
     String[] words;
     JSONArray emitArray = null;
@@ -37,62 +37,61 @@ public class Extractor extends BaseBatchBolt
     {
     	
     	try
-        {
-         	  JSONParser parser=new JSONParser();
-              DBObject obj = (DBObject) tuple.getValue(0);
+	{
+	    JSONParser parser=new JSONParser();
+	    DBObject obj = (DBObject) tuple.getValue(0);
               
-              String topic = new String();
-              topic = obj.get("topic").toString();
-              
-              
-              obj = (DBObject)obj.get("raw"); 
-              obj = (DBObject)obj.get("statuses");
-              
-              JSONArray array = null;
-			  array = (JSONArray) parser.parse(obj.toString());
-			  JSONObject emitobj = new JSONObject();
-              emitobj.put("topic", topic);
+	    String topic = new String();
+	    topic = obj.get("topic").toString();
               
               
+	    obj = (DBObject)obj.get("raw"); 
+	    obj = (DBObject)obj.get("statuses");
               
-              String tz = new String();
-              try
-              {
+	    JSONArray array = null;
+	    array = (JSONArray) parser.parse(obj.toString());
+	    JSONObject emitobj = new JSONObject();
+	    emitobj.put("topic", topic);
               
-	              for(int i=0 ; i < array.size();i++)
-	              {
-	              	JSONObject jobj =(JSONObject) array.get(i);
-	              	emitobj.put("tweet",jobj.get("text"));
+              
+              
+	    String tz = new String();
+	    try
+	    {
+              
+		for(int i=0 ; i < array.size();i++)
+		{
+		    JSONObject jobj =(JSONObject) array.get(i);
+		    emitobj.put("tweet",jobj.get("text"));
 	              	
-	              	//timezone logic
-	              	tz = ((JSONObject)jobj.get("user")).get("time_zone").toString();
-	              	if(tz == "None")
-	              		tz = ((JSONObject)jobj.get("user")).get("location").toString();
-	              	if(tz == "None")
-	              		tz = jobj.get("place").toString();
-	              	if(tz == "None")
-	              		tz = "unknown";
+		    //timezone logic
+		    tz = ((JSONObject)jobj.get("user")).get("time_zone").toString();
+		    if(tz == "None")
+			tz = ((JSONObject)jobj.get("user")).get("location").toString();
+		    if(tz == "None")
+			tz = jobj.get("place").toString();
+		    if(tz == "None")
+			tz = "unknown";
 	              		
-	              }
-	          }
-              catch(Exception e)
-              {
-            	  tz = "unknown";
-              }
+		}
+	    }
+	    catch(Exception e)
+	    {
+		tz = "unknown";
+            }
               
               
               
              
                	
-              emitobj.put("country",tz);
-              emitArray.add(emitobj);
+	    emitobj.put("country",tz);
+	    emitArray.add(emitobj);
               
               
         }
     	catch(Exception e)
     	{
-    		System.out.println("UnknownHostException: "+e);
-      		
+	    System.out.println("UnknownHostException: "+e);	
     	}
 
     }
@@ -100,11 +99,11 @@ public class Extractor extends BaseBatchBolt
     public void finishBatch() 
     {
     	if(emitArray!=null)
-    	{
-	    	for(Object emitObj : emitArray)
-	    	{
-	    		_collector.emit(new Values(_id, emitObj));
-	    	}
+	{
+	    for(Object emitObj : emitArray)
+	    {
+		_collector.emit(new Values(_id, emitObj));
+	    }
     	}
     	
     }
