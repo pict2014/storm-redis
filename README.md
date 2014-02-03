@@ -7,7 +7,7 @@ This project implements an approach towards implementing **_stateful-ness of bol
 *   [Kafka](https://kafka.apache.org/ "Kafka")
 *   [Redis](http://redis.io/ "redis")
 
-###Explaination###
+###Explanation###
 
 The project can be divided into two parts. The first is the _Spout-part_ which handles replaying of messages and 
 the second is the _Bolt-part_ which manages the intermediate-state of the main processing.
@@ -108,7 +108,7 @@ Jedis is a Java client used for Redis, which can be used as a Maven dependency
 
 ##The topology to show the working##
 
-###Explaination###
+###Explanation###
 
 The topology follows the following schematic:
 ```
