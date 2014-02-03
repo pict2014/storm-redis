@@ -140,5 +140,5 @@ TODO
 *   Restore State on failure
 
 
-###Note to contributers###
+###Note to contributors###
 First pull before doing anything.
