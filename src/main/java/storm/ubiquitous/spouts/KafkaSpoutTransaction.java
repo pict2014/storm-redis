@@ -65,7 +65,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
     }
     public static class KafkaPartitionedEmitter implements IPartitionedTransactionalSpout.Emitter<TransactionMetadata>{
 	//Specifies the size of each batch in bytes.
-	public static int SIZE=1000;
+	public static int SIZE=64*1024;
 	@Override
 	    public TransactionMetadata emitPartitionBatchNew(TransactionAttempt tx,BatchOutputCollector collector,int partition,TransactionMetadata lastPartitionMeta){
 	    //each partition will have many batches depending on the size of partition

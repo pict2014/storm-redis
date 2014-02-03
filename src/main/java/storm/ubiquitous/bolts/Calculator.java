@@ -1,3 +1,9 @@
+/**
+ * Transactional bolt it is the last bolt that receives data from
+ * from the first transactional bolt(Extractor) and saves the count
+ * for each "trend-location" pair.
+ */
+
 package storm.ubiquitous.bolts;
 
 import java.io.IOException;
@@ -21,16 +27,13 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
-public class Calculator extends BaseTransactionalBolt implements ICommitter, Serializable
-{
+public class Calculator extends BaseTransactionalBolt implements ICommitter, Serializable{
 	
     private static final long serialVersionUID = -2343991642735232104L;
 
     @SuppressWarnings("serial")
-    public static class CountValue implements Serializable
-    {
-	CountValue()
-	{
+    public static class CountValue implements Serializable{
+	CountValue(){
 	    count = new HashMap<Object,Integer>();
 	}
 	public HashMap<Object,Integer> prev_count = null;
@@ -40,36 +43,30 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     }
 	
     public static Map<Object, CountValue> INMEMORYDB = new ConcurrentHashMap<Object, CountValue>();
-	
-	
+ 
     TransactionAttempt _id;
     BatchOutputCollector _collector;
-	
-	
     Integer _count = 1;
     RedisMap mapStore;
 	
     HashMap<Object, HashMap<Object,Integer>> counter; 
     HashMap<Object, Integer> h;
-	
-	
 
-    public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,BatchOutputCollector collector, TransactionAttempt id) 
-    {
+    public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,BatchOutputCollector collector, TransactionAttempt id){
 	_id = id;
 	_collector=collector;
 	mapStore=new RedisMap("localhost");
 	counter = new HashMap<Object,HashMap<Object,Integer>>();   
     }
    
-    public void execute(Tuple tuple) 
-    {
+    public void execute(Tuple tuple){
 		
-	JSONObject jsonObj = (JSONObject) tuple.getValue(0);
+	JSONObject jsonObj = (JSONObject) tuple.getValue(1);
+	System.out.println("Calculator bolt. Msg "+jsonObj.toString());
         
-        try
-        {
+        try{
 	    h = counter.get(jsonObj.get("topic"));
+
 	    Integer i = h.get(jsonObj.get("country"));
 	    i++;
             
@@ -77,34 +74,28 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	    counter.put(jsonObj.get("topic"), h);
             	  
         }
-        catch(Exception e)
-        {
+        catch(Exception e){
 	    h = new HashMap<Object,Integer>();
 	    h.put(jsonObj.get("country"),1);
 	    counter.put(jsonObj.get("topic"), h);
         }
 		
-   }    
+    }    
    
-    public void finishBatch() throws FailedException
-    {
+    public void finishBatch() throws FailedException{
 		
-		
-	for (Object key : counter.keySet()) 
-	{
+	for (Object key : counter.keySet()){
 	        
 	    CountValue val = INMEMORYDB.get(key);
 	    CountValue newVal;
 	
-	    if (val == null || !val.txid.equals(_id.getTransactionId())) 
-	    {
+	    if (val == null || !val.txid.equals(_id.getTransactionId())){
 	          
 		newVal = new CountValue();
 		newVal.txid = _id.getTransactionId();
 		newVal.atid = _id.getAttemptId();
 		          
-		if (val != null) 
-		{
+		if (val != null){
 		    newVal.prev_count = val.count;
 		    newVal.count = val.count;
 		}
@@ -113,8 +104,7 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 		INMEMORYDB.put(key, newVal);
 	    }
 	        
-	    else 
-	    {
+	    else{
 		         
 		newVal = val;
 		System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is replayed.");
@@ -123,16 +113,12 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	    _collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
 	}
 	//Store State
-	if(counter.size()>0)
-	{
+	if(counter.size()>0){
 	    mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);
 	}
-	   	
     }    
    
-    public void declareOutputFields(OutputFieldsDeclarer declarer) 
-    {
+    public void declareOutputFields(OutputFieldsDeclarer declarer){
 	declarer.declare(new Fields("id","topic", "hash"));
     }
 }
- 

@@ -1,7 +1,9 @@
 package storm.ubiquitous;
 
 import storm.ubiquitous.spouts.KafkaSpoutTransaction;
-import storm.ubiquitous.bolts.BoltToPrint;
+//import storm.ubiquitous.bolts.BoltToPrint;
+import storm.ubiquitous.bolts.Extractor;
+import storm.ubiquitous.bolts.Calculator;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
@@ -13,9 +15,10 @@ public class TopologyMain{
 public static void main(String[] args) throws Exception {
     TransactionalTopologyBuilder builder = new TransactionalTopologyBuilder("state-trial", "transaction-spout", new KafkaSpoutTransaction(), 2);
     
-    builder.setBolt("print-sake", new BoltToPrint(), 4)
+    builder.setBolt("extractor", new Extractor(), 4)
             .shuffleGrouping("transaction-spout");
-       
+    builder.setBolt("calculator", new Calculator(),4)
+	.shuffleGrouping("extractor");
     LocalCluster cluster = new LocalCluster();
     Config config = new Config();
     
