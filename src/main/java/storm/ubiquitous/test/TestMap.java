@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import storm.ubiquitous.bolts.BatchCount.CountValue;
+import storm.ubiquitous.bolts.Calculator.CountValue;
 import storm.ubiquitous.state.RedisMap;
 
 @SuppressWarnings({ "unchecked" })
