@@ -21,7 +21,9 @@ import kafka.message.MessageAndOffset;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KafkaConsumer implements KafkaProperties{
+import storm.ubiquitous.ConfigProperties;
+
+public class KafkaConsumer implements ConfigProperties{
     
     private final Integer pno;
     private final Integer size;
@@ -36,19 +38,19 @@ public class KafkaConsumer implements KafkaProperties{
    
     public ByteBufferMessageSet  fetchdata() throws Exception {
       
-	SimpleConsumer simpleConsumer = new SimpleConsumer(KafkaProperties.kafkaServerURL,
-							   KafkaProperties.kafkaServerPort,
-							   KafkaProperties.connectionTimeOut,
-							   KafkaProperties.kafkaProducerBufferSize,
-							   KafkaProperties.clientId);
+	SimpleConsumer simpleConsumer = new SimpleConsumer(ConfigProperties.kafkaServerURL,
+							   ConfigProperties.kafkaServerPort,
+							   ConfigProperties.connectionTimeOut,
+							   ConfigProperties.kafkaProducerBufferSize,
+							   ConfigProperties.clientId);
 
 	System.out.println("Fetching partition "+pno);
 	FetchRequest req = new FetchRequestBuilder()
-            .clientId(KafkaProperties.clientId)
-            .addFetch(KafkaProperties.topic, pno, offset, size)
+            .clientId(ConfigProperties.clientId)
+            .addFetch(ConfigProperties.topic, pno, offset, size)
             .build();
 	FetchResponse fetchResponse = simpleConsumer.fetch(req);
-	return (ByteBufferMessageSet) fetchResponse.messageSet(KafkaProperties.topic, pno);
+	return (ByteBufferMessageSet) fetchResponse.messageSet(ConfigProperties.topic, pno);
 
     }
 }

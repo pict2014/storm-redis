@@ -27,6 +27,8 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
+import storm.ubiquitous.ConfigProperties;
+
 public class Calculator extends BaseTransactionalBolt implements ICommitter, Serializable{
 	
     private static final long serialVersionUID = -2343991642735232104L;
@@ -55,7 +57,7 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,BatchOutputCollector collector, TransactionAttempt id){
 	_id = id;
 	_collector=collector;
-	mapStore=new RedisMap("localhost");
+	mapStore=new RedisMap(ConfigProperties.redisHost);
 	counter = new HashMap<Object,HashMap<Object,Integer>>();   
     }
    

@@ -19,5 +19,5 @@ public interface ConfigProperties{
     final static String topic2 = "topic2";
     final static String topic3 = "topic3";
     final static String clientId = "ClientId";
-    final static String redisHost = "";
+    final static String redisHost = "localhost";
 }
