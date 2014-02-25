@@ -32,7 +32,7 @@ import storm.ubiquitous.ConfigProperties;
 public class Calculator extends BaseTransactionalBolt implements ICommitter, Serializable{
 	
     private static final long serialVersionUID = -2343991642735232104L;
-
+    static Integer i;
     @SuppressWarnings("serial")
     public static class CountValue implements Serializable{
 	CountValue(){
@@ -85,12 +85,12 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     }    
    
     public void finishBatch() throws FailedException{
-		
+	i++;		
 	for (Object key : counter.keySet()){
 	        
 	    CountValue val = INMEMORYDB.get(key);
 	    CountValue newVal;
-	
+
 	    if (val == null || !val.txid.equals(_id.getTransactionId())){
 	          
 		newVal = new CountValue();
@@ -110,6 +110,11 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 		         
 		newVal = val;
 		System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is replayed.");
+	    }
+
+	    if(i%7 == 1){
+		System.out.println("Failing on purpose... Txid "+newVal.txid+" AttemptID: "+newVal.atid);
+		throw new FailedException();
 	    }
 		       
 	    _collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
