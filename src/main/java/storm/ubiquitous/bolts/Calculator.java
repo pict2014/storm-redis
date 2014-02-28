@@ -50,7 +50,7 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     BatchOutputCollector _collector;
     Integer _count = 1;
     RedisMap mapStore;
-	
+    static int test;
     HashMap<Object, HashMap<Object,Integer>> counter; 
     HashMap<Object, Integer> h;
 
@@ -81,7 +81,12 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	    h.put(jsonObj.get("country"),1);
 	    counter.put(jsonObj.get("topic"), h);
         }
-		
+	test++;
+
+	//Failing deliberately
+	if(test == 260)
+	    throw new FailedException();
+
     }    
    
     public void finishBatch() throws FailedException{
@@ -109,7 +114,7 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	    else{
 		         
 		newVal = val;
-		System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is replayed.");
+		System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is not re-processed");
 	    }
 		       
 	    _collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));

@@ -82,6 +82,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 		if(lastPartitionMeta == null){
 		    //if lastPartitionMeta is null we start from offset 0.
 		    consumer = new KafkaConsumer(partition,0L,SIZE);
+		    System.out.println("Starting from offset...0");
 		}
 		else{ 
 		    //if lastPartitionMeta is not null then we get the end offset

@@ -66,7 +66,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	    counters.put(name, _count);
 	}
 	//Failing deliberately
-	if(test == 180)
+	if(test == 260)
 	    throw new FailedException();
 
     }    
