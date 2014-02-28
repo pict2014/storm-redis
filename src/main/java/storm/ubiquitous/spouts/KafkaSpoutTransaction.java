@@ -53,7 +53,9 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 
 	@Override
 	public int numPartitions(){
-	    return 2;
+	    //Keeping only 1 partition for time being.
+	    //To be changed later.
+	    return 1;
 	}
 	@Override
 	public boolean isReady(){
@@ -101,6 +103,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 		    ByteBuffer payload = messageAndOffset.message().payload();
 		    byte[] bytes = new byte[payload.limit()];
 		    payload.get(bytes);
+		    System.out.println("Data being emitted: "+ new String(bytes,"UTF-8"));
 		    collector.emit(new Values(tx, new String(bytes,"UTF-8")));
 		}
 
@@ -128,6 +131,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 		    ByteBuffer payload = messageAndOffset.message().payload();
 		    byte[] bytes = new byte[payload.limit()];
 		    payload.get(bytes);
+		    System.out.println("Data being re-emitted: "+ new String(bytes,"UTF-8"));
 		    collector.emit(new Values(tx, new String(bytes,"UTF-8")));
 		} 
 	    }
