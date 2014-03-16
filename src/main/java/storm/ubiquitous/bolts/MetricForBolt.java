@@ -28,9 +28,9 @@ class MetricForBolt{
     private static final int CARBON_AGGREGATOR_LINE_RECEIVER_PORT = 2023;
     // The following value must match carbon-cache's storage-schemas.conf!
     private static final int GRAPHITE_REPORT_INTERVAL_IN_SECONDS = 10;
-    private static final String GRAPHITE_METRICS_NAMESPACE_PREFIX = "production.apps.graphitedemo";
+    private static final String GRAPHITE_METRICS_NAMESPACE_PREFIX = "storm.ubiquitous.bolts";
     private static final Pattern hostnamePattern = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9-]*(\\.([a-zA-Z0-9][a-zA-Z0-9-]*))*$");
-    public transient Meter tuplesReceived;
+    public transient Meter tuplesReceived, failedExceptions;
 
     public void initializeMetricReporting() {
 	final MetricRegistry registry = new MetricRegistry();
@@ -43,7 +43,8 @@ class MetricForBolt{
 	    .filter(MetricFilter.ALL)
 	    .build(graphite);
 	reporter.start(GRAPHITE_REPORT_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
-	tuplesReceived = registry.meter(MetricRegistry.name("tuples", "received"));
+	tuplesReceived = registry.meter(MetricRegistry.name("tuples", "processed"));
+	failedExceptions = registry.meter(MetricRegistry.name("tuples", "failed"));
     }
 
     private String metricsPath() {

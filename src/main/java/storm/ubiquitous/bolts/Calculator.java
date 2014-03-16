@@ -1,4 +1,5 @@
 /**
+ * **Stateful**
  * Transactional bolt it is the last bolt that receives data from
  * from the first transactional bolt(Extractor) and saves the count
  * for each "trend-location" pair.
@@ -53,12 +54,14 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     static int test;
     HashMap<Object, HashMap<Object,Integer>> counter; 
     HashMap<Object, Integer> h;
-
+    MetricForBolt metric;
     public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,BatchOutputCollector collector, TransactionAttempt id){
 	_id = id;
 	_collector=collector;
 	mapStore=new RedisMap(ConfigProperties.redisHost);
 	counter = new HashMap<Object,HashMap<Object,Integer>>();   
+	metric = new MetricForBolt();
+	metric.initializeMetricReporting();
     }
    
     public void execute(Tuple tuple){
@@ -84,8 +87,10 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	test++;
 
 	//Failing deliberately
-	if(test == 260)
+	if(test % 260 == 0){
+	    metric.failedExceptions.mark();
 	    throw new FailedException();
+	}
 
     }    
    
@@ -112,12 +117,12 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	    }
 	        
 	    else{
-		         
 		newVal = val;
 		System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is not re-processed");
 	    }
 		       
 	    _collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
+	    metric.tuplesReceived.mark();
 	}
 	//Store State
 	if(counter.size()>0){
