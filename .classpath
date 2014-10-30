@@ -1,41 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/classes" path="src/main/java">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="classes">
-		<attributes>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/storm/storm/0.9.0.1/storm-0.9.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/storm-console-logging/0.9.0.1/storm-console-logging-0.9.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/storm-core/0.9.0.1/storm-core-0.9.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/clojure/1.4.0/clojure-1.4.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.4/commons-io-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/libthrift7/0.7.0-2/libthrift7-0.7.0-2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.1.1/httpclient-4.1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.1/httpcore-4.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clj-time/clj-time/0.4.1/clj-time-0.4.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/joda-time/joda-time/2.0/joda-time-2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/netflix/curator/curator-framework/1.0.1/curator-framework-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/netflix/curator/curator-client/1.0.1/curator-client-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/zookeeper/zookeeper/3.3.4/zookeeper-3.3.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/jline/jline/0.9.94/jline-0.9.94.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/13.0/guava-13.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/backtype/jzmq/2.1.0/jzmq-2.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/compojure/compojure/1.1.3/compojure-1.1.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/core.incubator/0.1.0/core.incubator-0.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/tools.macro/0.1.0/tools.macro-0.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clout/clout/1.0.1/clout-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-core/1.1.5/ring-core-1.1.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/hiccup/hiccup/0.3.6/hiccup-0.3.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-devel/0.3.11/ring-devel-0.3.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clj-stacktrace/clj-stacktrace/0.2.2/clj-stacktrace-0.2.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-jetty-adapter/0.3.11/ring-jetty-adapter-0.3.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-servlet/0.3.11/ring-servlet-0.3.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/tools.logging/0.2.3/tools.logging-0.2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/math.numeric-tower/0.0.1/math.numeric-tower-0.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/carbonite/1.5.0/carbonite-1.5.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/esotericsoftware/kryo/kryo/2.17/kryo-2.17.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/esotericsoftware/reflectasm/reflectasm/1.07/reflectasm-1.07-shaded.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/ow2/asm/asm/4.0/asm-4.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/objenesis/objenesis/1.2/objenesis-1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/yaml/snakeyaml/1.11/snakeyaml-1.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/tools.cli/0.2.2/tools.cli-0.2.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/googlecode/disruptor/disruptor/2.10.1/disruptor-2.10.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/jgrapht/0.8.3/jgrapht-0.8.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ch/qos/logback/logback-classic/1.0.6/logback-classic-1.0.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ch/qos/logback/logback-core/1.0.6/logback-core-1.0.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/log4j-over-slf4j/1.6.6/log4j-over-slf4j-1.6.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/storm/storm-netty/0.9.0.1/storm-netty-0.9.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/netty/netty/3.6.3.Final/netty-3.6.3.Final.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/3.2.4.RELEASE/spring-core-3.2.4.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/3.2.4.RELEASE/spring-context-3.2.4.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.2.4.RELEASE/spring-aop-3.2.4.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.2.4.RELEASE/spring-beans-3.2.4.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-expression/3.2.4.RELEASE/spring-expression-3.2.4.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/kafka/kafka_2.9.2/0.8.0/kafka_2.9.2-0.8.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/scala-lang/scala-library/2.9.2/scala-library-2.9.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/jopt-simple/jopt-simple/3.2/jopt-simple-3.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-simple/1.6.4/slf4j-simple-1.6.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/scala-lang/scala-compiler/2.9.2/scala-compiler-2.9.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/101tec/zkclient/0.3/zkclient-0.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/xerial/snappy/snappy-java/1.0.4.1/snappy-java-1.0.4.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/yammer/metrics/metrics-annotation/2.2.0/metrics-annotation-2.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/redis/clients/jedis/2.2.1/jedis-2.2.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.6/commons-pool-1.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/codahale/metrics/metrics-core/3.0.1/metrics-core-3.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/codahale/metrics/metrics-annotation/3.0.1/metrics-annotation-3.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/codahale/metrics/metrics-graphite/3.0.1/metrics-graphite-3.0.1.jar"/>
 </classpath>

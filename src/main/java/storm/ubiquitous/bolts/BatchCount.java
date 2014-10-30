@@ -1,6 +1,5 @@
 package storm.ubiquitous.bolts;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -107,7 +106,7 @@ public class BatchCount extends BaseTransactionalBolt implements ICommitter, Ser
 	//Store State
 	if(counters.size()>0)
 	    {
-		mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);
+				mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);
 	    }
 	   	
     }    
