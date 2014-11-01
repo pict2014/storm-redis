@@ -1,5 +1,5 @@
 /**
- * **Stateful**
+ * **Stateless**
  * Transactional bolt it is the last bolt that receives data from
  * from the first transactional bolt(Extractor) and saves the count
  * for each "trend-location" pair.
@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.simple.JSONObject;
 
-import storm.ubiquitous.state.RedisMap;
 import backtype.storm.coordination.BatchOutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.FailedException;
@@ -30,10 +29,10 @@ import backtype.storm.tuple.Values;
 
 import storm.ubiquitous.ConfigProperties;
 
-public class Calculator extends BaseTransactionalBolt implements ICommitter, Serializable{
+public class StatelessCalculator extends BaseTransactionalBolt implements ICommitter, Serializable{
 	
     private static final long serialVersionUID = -2343991642735232104L;
-    static Integer i;
+
     @SuppressWarnings("serial")
     public static class CountValue implements Serializable{
 	CountValue(){
@@ -50,7 +49,6 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     TransactionAttempt _id;
     BatchOutputCollector _collector;
     Integer _count = 1;
-    RedisMap mapStore;
     static int test;
     HashMap<Object, HashMap<Object,Integer>> counter; 
     HashMap<Object, Integer> h;
@@ -58,7 +56,6 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,BatchOutputCollector collector, TransactionAttempt id){
 	_id = id;
 	_collector=collector;
-	mapStore=new RedisMap(ConfigProperties.redisHost);
 	counter = new HashMap<Object,HashMap<Object,Integer>>();   
 	metric = new MetricForBolt();
 	metric.initializeMetricReporting();
@@ -95,13 +92,11 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
     }    
    
     public void finishBatch() throws FailedException{
-	i++;		
+		
 	for (Object key : counter.keySet()){
 	        
 	    CountValue val = INMEMORYDB.get(key);
 	    CountValue newVal;
-
-	    if (val == null || !val.txid.equals(_id.getTransactionId())){
 	          
 		newVal = new CountValue();
 		newVal.txid = _id.getTransactionId();
@@ -114,24 +109,9 @@ public class Calculator extends BaseTransactionalBolt implements ICommitter, Ser
 	
 		newVal.count = counter.get(key);
 		INMEMORYDB.put(key, newVal);
-	    }
-	        
-	    else{
-		newVal = val;
-		System.out.println("Tuple: " +  key + " Txid: " + newVal.txid + " AttemptID: "+ newVal.atid + " is not re-processed");
-	    }
-
-	    if(i%7 == 1){
-		System.out.println("Failing on purpose... Txid "+newVal.txid+" AttemptID: "+newVal.atid);
-		throw new FailedException();
-	    }
 		       
 	    _collector.emit(new Values(_id, key, newVal.count, newVal.prev_count));
 	    metric.tuplesReceived.mark();
-	}
-	//Store State
-	if(counter.size()>0){
-	    mapStore.setState(_id.getTransactionId().toByteArray(), INMEMORYDB);
 	}
     }    
    

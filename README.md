@@ -132,6 +132,18 @@ Thus, the combination of mongo-kafka helps in *simulating* real-time streaming d
 Basically, mongodb is used so that a lot of data can be stored and then put on kafka so that 
 the topology sees a lot of data. Thus, it basically resembles a firehose. 
 
+###Steps to Run the Topology###
+1. Mongo server on
+2. Start zookeeper
+3. Kafka server on
+4. Run  MongoClientTest from [kafka-starter](https://github.com/abhi11/kafka-starter)
+   - Puts data from mongo kafka.
+5. Mongo Server off as it is no longer needed.
+5. Start nimbus.
+6. Start supervisor.
+7. Submit toopology.
+
+
 
 TODO
 =====================

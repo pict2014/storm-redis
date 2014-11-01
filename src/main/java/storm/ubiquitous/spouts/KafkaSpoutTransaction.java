@@ -53,7 +53,9 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 
 	@Override
 	public int numPartitions(){
-	    return 2;
+	    //Keeping only 1 partition for time being.
+	    //To be changed later.
+	    return 1;
 	}
 	@Override
 	public boolean isReady(){
@@ -80,6 +82,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 		if(lastPartitionMeta == null){
 		    //if lastPartitionMeta is null we start from offset 0.
 		    consumer = new KafkaConsumer(partition,0L,SIZE);
+		    System.out.println("Starting from offset...0");
 		}
 		else{ 
 		    //if lastPartitionMeta is not null then we get the end offset
@@ -101,6 +104,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 		    ByteBuffer payload = messageAndOffset.message().payload();
 		    byte[] bytes = new byte[payload.limit()];
 		    payload.get(bytes);
+		    System.out.println("Data being emitted: "+ new String(bytes,"UTF-8"));
 		    collector.emit(new Values(tx, new String(bytes,"UTF-8")));
 		}
 
@@ -128,6 +132,7 @@ public class KafkaSpoutTransaction extends BasePartitionedTransactionalSpout<Tra
 		    ByteBuffer payload = messageAndOffset.message().payload();
 		    byte[] bytes = new byte[payload.limit()];
 		    payload.get(bytes);
+		    System.out.println("Data being re-emitted: "+ new String(bytes,"UTF-8"));
 		    collector.emit(new Values(tx, new String(bytes,"UTF-8")));
 		} 
 	    }
