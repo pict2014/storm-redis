@@ -9,7 +9,7 @@ This project implements an approach towards implementing **_stateful-ness of bol
 
 ###Explanation###
 
-The project can be divided into two parts. The first is the _Spout-part_ which handles replaying of messages and 
+The project can be divided into two parts. The first is the _Spout-part_ which handles replaying of messages and
 the second is the _Bolt-part_ which manages the intermediate-state of the main processing.
 
 ####Spout####
@@ -26,10 +26,10 @@ This project builds abstractions for bolts with fault-tolerant state, so if a ta
 public interface IPersistentMap(String serverURL) {
       public Object getState(byte[] key);
       public void setState(byte[] key, Object value);
-} 
+}
 ```
 The first implementation will target amounts of state that can fit into memory, so re-initialization time won't be a concern. But once we look at storing much larger amount of state we will need to consider this point.
-State of Bolts get persisted periodically in Redis. Redis is an in-memory database that persists on disk. The data model is key-value, 
+State of Bolts get persisted periodically in Redis. Redis is an in-memory database that persists on disk. The data model is key-value,
 but many different kind of values are supported: Strings, Lists, Sets, Sorted Sets, Hashes <http://redis.io>
 
 
@@ -38,7 +38,7 @@ but many different kind of values are supported: Strings, Lists, Sets, Sorted Se
 The project uses many dependencies for **kafka** and **redis**.
 All dependenices are provided as maven dependecies.
 
-Kafka uses the following dependencies. To run the topology inside storm jars of the dependencies 
+Kafka uses the following dependencies. To run the topology inside storm jars of the dependencies
 can be downloaded from maven repository and should be placed inside the `lib` directory of storm
 
 ```xml
@@ -89,7 +89,7 @@ can be downloaded from maven repository and should be placed inside the `lib` di
 			<groupId>com.yammer.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 			<version>2.2.0</version>
-		</dependency>     
+		</dependency>
 
         </dependencies>
 ```
@@ -114,7 +114,7 @@ The topology follows the following schematic:
 ```
            ____asking to replay batch__ _____failed signal to spout__
           |                            |                             |
-          V                            V                             V 
+          V                            V                             V
 .-----------------.       .-----------------.        .-----------------.     .-----------------.
 |       kafka     |------>|       spout     |------->|      bolt       |---->|      redis      |
 '-----------------'       '-----------------'        '-----------------'     '-----------------'
@@ -129,8 +129,8 @@ Data that is extracted from mongodb is in json format.
 Data inside mongodb is put using a _python_ code which uses the **_twitter api_** for eg see [this](https://github.com/abhi11/twitter-trend/blob/master/trend_insert.py)
 
 Thus, the combination of mongo-kafka helps in *simulating* real-time streaming data.
-Basically, mongodb is used so that a lot of data can be stored and then put on kafka so that 
-the topology sees a lot of data. Thus, it basically resembles a firehose. 
+Basically, mongodb is used so that a lot of data can be stored and then put on kafka so that
+the topology sees a lot of data. Thus, it basically resembles a firehose.
 
 ###Steps to Run the Topology###
 1. Mongo server on
@@ -143,14 +143,12 @@ the topology sees a lot of data. Thus, it basically resembles a firehose.
 6. Start supervisor.
 7. Submit toopology.
 
-
+###Note###
+* For benchmarking use the branch : FailandBenchM
+* To understand the benchmarking workflow visit the [Benchmarking](https://github.com/pict2014/storm-redis/wiki/Benchmarking) Wiki Page
 
 TODO
 =====================
 *   Writing the kafka producer so partitions have equal no. of messages.
 *   Runtime failure
 *   Restore State on failure
-
-
-###Note to contributors###
-First pull before doing anything.
