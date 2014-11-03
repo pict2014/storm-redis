@@ -20,4 +20,12 @@ public interface ConfigProperties{
     final static String topic3 = "topic3";
     final static String clientId = "ClientId";
     final static String redisHost = "localhost";
+
+    /* For Metrics */
+    final static String GRAPHITE_HOST = "127.0.0.1";
+    private static final int CARBON_AGGREGATOR_LINE_RECEIVER_PORT = 2023;
+    /* The following value must match carbon-cache's storage-schemas.conf */
+    final static int GRAPHITE_REPORT_INTERVAL_IN_SECONDS = 10;
+    final static String GRAPHITE_METRICS_NAMESPACE_PREFIX = "storm.ubiquitous.bolts";
+
 }
