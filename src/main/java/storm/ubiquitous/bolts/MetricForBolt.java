@@ -1,5 +1,5 @@
 /**
- * import this in the bolt file and declare an object obj. Then initialize 
+ * import this in the bolt file and declare an object obj. Then initialize
  * the obj inside prepare method
  * and call obj.initializeMetricReporting().
  * And call obj.tuplesReceived.mark() where the tuple is completely processed
@@ -22,34 +22,31 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
-class MetricForBolt{
+import storm.ubiquitous.ConfigProperties;
 
-    private static final String GRAPHITE_HOST = "127.0.0.1";
-    private static final int CARBON_AGGREGATOR_LINE_RECEIVER_PORT = 2023;
-    // The following value must match carbon-cache's storage-schemas.conf!
-    private static final int GRAPHITE_REPORT_INTERVAL_IN_SECONDS = 10;
-    private static final String GRAPHITE_METRICS_NAMESPACE_PREFIX = "storm.ubiquitous.bolts";
+class MetricForBolt implements ConfigProperties {
+
     private static final Pattern hostnamePattern = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9-]*(\\.([a-zA-Z0-9][a-zA-Z0-9-]*))*$");
     public transient Meter tuplesReceived, failedExceptions;
 
     public void initializeMetricReporting() {
 	final MetricRegistry registry = new MetricRegistry();
-	final Graphite graphite = new Graphite(new InetSocketAddress(GRAPHITE_HOST,
-								     CARBON_AGGREGATOR_LINE_RECEIVER_PORT));
+	final Graphite graphite = new Graphite(new InetSocketAddress(ConfigProperties.GRAPHITE_HOST,
+								     ConfigProperties.CARBON_AGGREGATOR_LINE_RECEIVER_PORT));
 	final GraphiteReporter reporter = GraphiteReporter.forRegistry(registry)
 	    .prefixedWith(metricsPath())
 	    .convertRatesTo(TimeUnit.SECONDS)
 	    .convertDurationsTo(TimeUnit.MILLISECONDS)
 	    .filter(MetricFilter.ALL)
 	    .build(graphite);
-	reporter.start(GRAPHITE_REPORT_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
+	reporter.start(ConfigProperties.GRAPHITE_REPORT_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
 	tuplesReceived = registry.meter(MetricRegistry.name("tuples", "processed"));
 	failedExceptions = registry.meter(MetricRegistry.name("tuples", "failed"));
     }
 
     private String metricsPath() {
 	final String myHostname = extractHostnameFromFQHN(detectHostname());
-	return GRAPHITE_METRICS_NAMESPACE_PREFIX + "." + myHostname;
+	return ConfigProperties.GRAPHITE_METRICS_NAMESPACE_PREFIX + "." + myHostname;
     }
 
     private static String detectHostname() {
